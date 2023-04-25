@@ -1,16 +1,22 @@
 // Oppgave 1
 class Circle {
+    // private tilsier at variablen kun kan bli brukt inni klassen. _ før variabel tilsier det samme
     private _radius?: number = 1;
     private _color?: string = "red";
 
+    // for at en konstruktør skal være frivellig å bruke, må man bruke ? for å si at det kan være undefined
     constructor(radius?: number, color?: string) {
-        if (radius && radius > 0) this._radius = radius;
+        // hvis radius er undefined (altså ikke sendt inn), 
+        // så beholder man veriden som allerede er satt
+        if (radius && radius > 0) this._radius = radius; 
         if (color) this._color = color;
     }
 
+    // get bruker man for å hente ut private variabler
     get radius() { return this._radius; }
     get color() { return this._color; }
 
+    // set bruker man for å endre private variabler
     set radius(value: number | undefined) { this._radius = value; }
     set color(value: string | undefined) { this._color = value; }
 
@@ -25,7 +31,15 @@ class Circle {
 
 class Kube {
     private _side: number;
-    private _sirkel: Circle;
+    private _sirkel: Circle; // går an å bruke klasser som typer
+
+    /**
+      her kunne man også utenfor klassen definert en egen type for Cirle.
+      type Circle = {
+        radius?: number,
+        color?: string
+      } 
+    */
 
     constructor(side: number, sirkel: Circle) {
         this._side = side;
@@ -43,7 +57,12 @@ const cube = new Kube(2, myNewCircle);
 
 
 // Oppgave 2
+
+// abstract betyr at man ikke kan oprette en instans av klassen
 abstract class Brikke {
+    // protected er private varibler som kan bli brukt i klasser
+    // som arver fra denne.
+    // private variabler kan ikke brukes i de andre klassene.
     protected _name: string = "Brikke";
     private _color: string;
     private _posX: string;
@@ -54,6 +73,7 @@ abstract class Brikke {
     constructor(color: string, posX: string, posY: number) {
         this._color = color;
 
+        // må sjekke om posisjonene som blir sendt er riktige.
         if (this.isValidPosX(posX)) this._posX = posX;
         else throw new Error("Posisjon X (posX) må være en bokstav mellom A - H");
 
@@ -87,9 +107,13 @@ class Bonde extends Brikke {
 }
 
 class Konge extends Brikke {
+    // her kan man sette _name som var protected i Brikke klassen
+    // til noe som passer denne klassen
     _name = "Konge";
     
     constructor(color: string, posX: string, posY: number) {
+        // bruker super på de parameterne som skal sendes inn 
+        // når man oppretter en instans
         super(color, posX, posY);
     }
 }
